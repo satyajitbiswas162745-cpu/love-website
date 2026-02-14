@@ -79,7 +79,7 @@ button:hover{
  box-shadow:0 0 30px white;
 }
 
-/* PHOTO LAYOUTS RESPONSIVE */
+/* PHOTO LAYOUT SYSTEM (FINAL FIX) */
 .photoBox{
   display:flex;
   gap:18px;
@@ -88,44 +88,57 @@ button:hover{
   margin-top:20px;
 }
 
+/* image frames */
 .photoBox img{
   border-radius:22px;
   box-shadow:0 10px 30px rgba(0,0,0,.25);
   transition:.4s;
-  max-width:100%;
-  height:auto;
+  object-fit:cover;
 }
 
 .photoBox img:hover{transform:scale(1.04)}
 
-/* Desktop sizes */
-.side img{width:340px}
-.stack img{width:380px}
+/* LANDSCAPE HERO (day15 & birthday) */
+.hero img{
+  width:520px;
+  aspect-ratio:16/10;
+}
+
+/* SIDE BY SIDE */
+.side img{
+  width:330px;
+  aspect-ratio:4/5;
+}
+
+/* STACKED PORTRAIT (day17 fix) */
+.stack img{
+  width:340px;
+  aspect-ratio:4/5;
+}
+
+/* POLAROID STYLE */
 .polaroid img{
   width:260px;
+  aspect-ratio:1/1;
   background:white;
   padding:8px;
   box-shadow:0 10px 25px rgba(0,0,0,.3);
 }
-.hero img{width:520px}
 
 /* Tablet */
 @media(max-width:900px){
-  .side img{width:300px}
-  .stack img{width:330px}
   .hero img{width:420px}
+  .side img,.stack img{width:280px}
 }
 
 /* Mobile */
 @media(max-width:600px){
-  .photoBox{gap:12px}
-  .side img,
-  .stack img,
-  .hero img,
-  .polaroid img{
-     width:90%;
+  .photoBox img{
+    width:90% !important;
+    aspect-ratio:4/5;
   }
 }
+
 
 video{width:100%;margin-top:15px;border-radius:20px;display:none}
 .musicBadge{margin-top:10px;font-size:14px;opacity:.8}
@@ -215,4 +228,5 @@ function openSurprise(){
 
 </body>
 </html>
+
 
