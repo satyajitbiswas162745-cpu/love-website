@@ -35,7 +35,6 @@ body{
 }
 
 .container{
- animation:fadeIn 1.5s ease;
  background:rgba(255,255,255,0.15);
  backdrop-filter:blur(18px);
  padding:35px;
@@ -46,21 +45,37 @@ body{
  text-align:center;
 }
 
-@keyframes fadeIn{
- from{opacity:0; transform:translateY(40px)}
- to{opacity:1}
+/* photo viewer */
+.photoFrame{
+ width:420px;
+ max-width:90%;
+ margin:20px auto;
+ overflow:hidden;
+ border-radius:25px;
+ box-shadow:0 15px 35px rgba(0,0,0,.3);
+ position:relative;
 }
 
-h1{
- font-family:'Great Vibes',cursive;
- font-size:48px;
- margin:0;
+.photoSlider{
+ display:flex;
+ transition:0.6s ease;
 }
 
-#countdown{
- font-size:32px;
- font-weight:600;
- margin:15px 0;
+.photoSlider img{
+ width:100%;
+ height:480px;
+ object-fit:cover;
+}
+
+/* toggle button */
+.toggleBtn{
+ margin-top:10px;
+ background:white;
+ color:#ff4f81;
+ padding:10px 20px;
+ border-radius:30px;
+ cursor:pointer;
+ display:none;
 }
 
 button{
@@ -71,77 +86,11 @@ button{
  background:white;
  color:#ff4f81;
  cursor:pointer;
- transition:.3s;
- box-shadow:0 0 20px rgba(255,255,255,.6);
+ margin-top:15px;
 }
-button:hover{
- transform:scale(1.1);
- box-shadow:0 0 30px white;
-}
-
-/* PHOTO LAYOUT SYSTEM (FINAL FIX) */
-.photoBox{
-  display:flex;
-  gap:18px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:20px;
-}
-
-/* image frames */
-.photoBox img{
-  border-radius:22px;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  transition:.4s;
-  object-fit:cover;
-}
-
-.photoBox img:hover{transform:scale(1.04)}
-
-/* LANDSCAPE HERO (day15 & birthday) */
-.hero img{
-  width:520px;
-  aspect-ratio:16/10;
-}
-
-/* SIDE BY SIDE */
-.side img{
-  width:330px;
-  aspect-ratio:4/5;
-}
-
-/* STACKED PORTRAIT (day17 fix) */
-.stack img{
-  width:340px;
-  aspect-ratio:4/5;
-}
-
-/* POLAROID STYLE */
-.polaroid img{
-  width:260px;
-  aspect-ratio:1/1;
-  background:white;
-  padding:8px;
-  box-shadow:0 10px 25px rgba(0,0,0,.3);
-}
-
-/* Tablet */
-@media(max-width:900px){
-  .hero img{width:420px}
-  .side img,.stack img{width:280px}
-}
-
-/* Mobile */
-@media(max-width:600px){
-  .photoBox img{
-    width:90% !important;
-    aspect-ratio:4/5;
-  }
-}
-
 
 video{width:100%;margin-top:15px;border-radius:20px;display:none}
-.musicBadge{margin-top:10px;font-size:14px;opacity:.8}
+#countdown{font-size:30px;margin:15px}
 </style>
 </head>
 
@@ -153,31 +102,32 @@ setInterval(()=>{
  h.className="heart";
  h.innerHTML="❤";
  h.style.left=Math.random()*100+"vw";
- h.style.fontSize=Math.random()*20+10+"px";
  document.body.appendChild(h);
  setTimeout(()=>h.remove(),6000);
 },400);
 </script>
 
 <div class="container">
- <h1>For My Love ❤️</h1>
+ <h1 style="font-family:'Great Vibes';font-size:48px">For My Love ❤️</h1>
  <h2>Countdown to Your Birthday 🎂</h2>
  <div id="countdown"></div>
 
  <button onclick="openSurprise()">Open Today's Surprise 💌</button>
-
  <h2 id="quote"></h2>
 
- <div id="photoBox" class="photoBox">
-   <img id="photo1">
-   <img id="photo2">
+ <!-- PHOTO SLIDER -->
+ <div class="photoFrame">
+   <div class="photoSlider" id="slider">
+     <img id="img1">
+     <img id="img2">
+   </div>
  </div>
+
+ <div class="toggleBtn" id="toggleBtn" onclick="nextPhoto()">Next Photo ➜</div>
 
  <video id="bdayVideo" controls>
    <source src="birthday.mp4" type="video/mp4">
  </video>
-
- <div class="musicBadge" id="musicText"></div>
 </div>
 
 <audio id="music" loop></audio>
@@ -195,15 +145,17 @@ setInterval(()=>{
  countdown.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
-// surprises with layouts
+// daily data
 const surprises={
-15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3",layout:"hero"},
-16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3",layout:"side"},
-17:{quote:"You are my today and all of my tomorrows 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3",layout:"stack"},
-18:{quote:"I fall in love with you again every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3",layout:"polaroid"},
-19:{quote:"One more sleep until your birthday 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3",layout:"side"},
-20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true,layout:"hero"}
+15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
+16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3"},
+17:{quote:"You are my today and all of my tomorrows 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3"},
+18:{quote:"I fall in love with you again every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3"},
+19:{quote:"One more sleep until your birthday 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3"},
+20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true}
 };
+
+let currentSlide=0;
 
 function openSurprise(){
  const today=new Date().getDate();
@@ -211,22 +163,26 @@ function openSurprise(){
  if(!data){quote.innerHTML="Your surprises start from 15 Feb 💌";return;}
 
  quote.innerHTML=data.quote;
- photo1.src=data.img1;
- photo2.src=data.img2;
 
- document.getElementById("photoBox").className="photoBox "+data.layout;
+ img1.src=data.img1;
+ img2.src=data.img2;
+
+ document.getElementById("toggleBtn").style.display="inline-block";
 
  const music=document.getElementById("music");
  music.src=data.song;
  music.load();
  music.play().catch(()=>{});
- musicText.innerHTML="🎵 Playing your song...";
 
  if(data.video) document.getElementById("bdayVideo").style.display="block";
+}
+
+function nextPhoto(){
+ const slider=document.getElementById("slider");
+ currentSlide = currentSlide===0 ? 1 : 0;
+ slider.style.transform=`translateX(-${currentSlide*100}%)`;
 }
 </script>
 
 </body>
 </html>
-
-
