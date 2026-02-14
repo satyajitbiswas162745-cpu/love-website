@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For My Love ❤️</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    text-align:center;
+}
+
+.container{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    padding:25px;
+    border-radius:25px;
+    width:90%;
+    max-width:750px;
+}
+
+img{
+    width:48%;
+    border-radius:20px;
+    margin-top:10px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.photos{
+    display:flex;
+    justify-content:space-between;
+}
+
+video{
+    width:100%;
+    margin-top:15px;
+    border-radius:20px;
+    display:none;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    background:white;
+    color:#ff4f81;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+#countdown{
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>For My Love ❤️</h1>
+    <h2>Countdown to Your Birthday 🎂</h2>
+    <div id="countdown"></div>
+
+    <button onclick="openSurprise()">Open Today's Surprise 💌</button>
+
+    <h2 id="quote"></h2>
+    <div class="photos">
+        <img id="photo1">
+        <img id="photo2">
+    </div>
+
+    <video id="bdayVideo" controls>
+        <source src="videos/birthday.mp4" type="video/mp4">
+    </video>
+</div>
+
+<audio id="music" loop></audio>
+
+<script>
+// 🎂 Countdown
+const birthday = new Date("Feb 20, 2026 00:00:00").getTime();
+setInterval(()=>{
+    const now = new Date().getTime();
+    const gap = birthday - now;
+    const d = Math.floor(gap/(1000*60*60*24));
+    const h = Math.floor((gap%(1000*60*60*24))/(1000*60*60));
+    const m = Math.floor((gap%(1000*60*60))/(1000*60));
+    const s = Math.floor((gap%(1000*60))/1000);
+    countdown.innerHTML = d+"d "+h+"h "+m+"m "+s+"s";
+},1000);
+
+// 💌 Daily data
+const surprises = {
+
+15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",
+img1:"photos/day15-1.jpg", img2:"photos/day15-2.jpg", song:"songs/day15.mp3"},
+
+16:{quote:"With you, every moment becomes a memory 💖",
+img1:"photos/day16-1.jpg", img2:"photos/day16-2.jpg", song:"songs/day16.mp3"},
+
+17:{quote:"You are my today and all of my tomorrows 🌸",
+img1:"photos/day17-1.jpg", img2:"photos/day17-2.jpg", song:"songs/day17.mp3"},
+
+18:{quote:"I fall in love with you again every day 💕",
+img1:"photos/day18-1.jpg", img2:"photos/day18-2.jpg", song:"songs/day18.mp3"},
+
+19:{quote:"One more sleep until your birthday 🎉",
+img1:"photos/day19-1.jpg", img2:"photos/day19-2.jpg", song:"songs/day19.mp3"},
+
+20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",
+img1:"photos/day20-1.jpg", img2:"photos/day20-2.jpg",
+song:"songs/birthday.mp3", video:true}
+
+};
+
+function openSurprise(){
+    const today = new Date().getDate();
+    const data = surprises[today];
+
+    if(!data){
+        quote.innerHTML="Your surprises start from 15 Feb 💌";
+        return;
+    }
+
+    quote.innerHTML = data.quote;
+    photo1.src = data.img1;
+    photo2.src = data.img2;
+
+    const music = document.getElementById("music");
+    music.src = data.song;
+    music.play();
+
+    // 🎥 show video only on birthday
+    if(data.video){
+        document.getElementById("bdayVideo").style.display="block";
+    }
+}
+</script>
+
+</body>
+</html>
