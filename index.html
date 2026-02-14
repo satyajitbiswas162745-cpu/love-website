@@ -4,146 +4,128 @@
 <meta charset="UTF-8">
 <title>For My Love ❤️</title>
 
-<!-- Romantic Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
 
 body{
-    margin:0;
-    font-family:'Poppins',sans-serif;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    overflow:hidden;
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:linear-gradient(135deg,#ff758c,#ff7eb3);
+ height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ color:white;
+ overflow:hidden;
 }
 
 /* floating hearts */
 .heart{
-    position:absolute;
-    bottom:-50px;
-    font-size:20px;
-    animation:float 6s linear infinite;
-    opacity:.6;
+ position:absolute;
+ bottom:-50px;
+ font-size:20px;
+ animation:float 6s linear infinite;
+ opacity:.6;
 }
 @keyframes float{
-    from{transform:translateY(0);opacity:1}
-    to{transform:translateY(-110vh);opacity:0}
+ from{transform:translateY(0)}
+ to{transform:translateY(-110vh);opacity:0}
 }
 
 .container{
-    animation:fadeIn 1.5s ease;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(18px);
-    padding:35px;
-    border-radius:30px;
-    width:90%;
-    max-width:750px;
-    box-shadow:0 0 40px rgba(0,0,0,.2);
+ animation:fadeIn 1.5s ease;
+ background:rgba(255,255,255,0.15);
+ backdrop-filter:blur(18px);
+ padding:35px;
+ border-radius:30px;
+ width:90%;
+ max-width:750px;
+ box-shadow:0 0 40px rgba(0,0,0,.2);
+ text-align:center;
 }
 
 @keyframes fadeIn{
-    from{opacity:0; transform:translateY(40px)}
-    to{opacity:1}
+ from{opacity:0; transform:translateY(40px)}
+ to{opacity:1}
 }
 
 h1{
-    font-family:'Great Vibes',cursive;
-    font-size:48px;
-    margin:0;
+ font-family:'Great Vibes',cursive;
+ font-size:48px;
+ margin:0;
 }
 
-h2{margin:10px 0}
-
 #countdown{
-    font-size:32px;
-    font-weight:600;
-    margin:15px 0;
+ font-size:32px;
+ font-weight:600;
+ margin:15px 0;
 }
 
 button{
-    padding:14px 30px;
-    border:none;
-    border-radius:40px;
-    font-size:18px;
-    background:white;
-    color:#ff4f81;
-    cursor:pointer;
-    transition:.3s;
-    box-shadow:0 0 20px rgba(255,255,255,.6);
+ padding:14px 30px;
+ border:none;
+ border-radius:40px;
+ font-size:18px;
+ background:white;
+ color:#ff4f81;
+ cursor:pointer;
+ transition:.3s;
+ box-shadow:0 0 20px rgba(255,255,255,.6);
 }
 button:hover{
-    transform:scale(1.1);
-    box-shadow:0 0 30px white;
+ transform:scale(1.1);
+ box-shadow:0 0 30px white;
 }
 
-.photos{
-    display:flex;
-    gap:10px;
-    margin-top:10px;
-}
-
-img{
-    width:50%;
-    border-radius:20px;
-    box-shadow:0 0 20px rgba(0,0,0,.3);
-    transition:.4s;
-}
+/* PHOTO LAYOUTS */
+.photoBox{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:15px}
+img{border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:.4s}
 img:hover{transform:scale(1.05)}
+.side img{width:48%}
+.stack img{width:80%}
+.polaroid img{width:40%;background:white;padding:8px;box-shadow:0 10px 25px rgba(0,0,0,.3)}
+.hero img{width:90%}
 
-video{
-    width:100%;
-    margin-top:15px;
-    border-radius:20px;
-    display:none;
-}
-
-.musicBadge{
-    margin-top:10px;
-    font-size:14px;
-    opacity:.8;
-}
+video{width:100%;margin-top:15px;border-radius:20px;display:none}
+.musicBadge{margin-top:10px;font-size:14px;opacity:.8}
 </style>
 </head>
 
 <body>
 
-<!-- floating hearts -->
 <script>
 setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=Math.random()*20+10+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
+ const h=document.createElement("div");
+ h.className="heart";
+ h.innerHTML="❤";
+ h.style.left=Math.random()*100+"vw";
+ h.style.fontSize=Math.random()*20+10+"px";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
 },400);
 </script>
 
 <div class="container">
-    <h1>For My Love ❤️</h1>
-    <h2>Countdown to Your Birthday 🎂</h2>
-    <div id="countdown"></div>
+ <h1>For My Love ❤️</h1>
+ <h2>Countdown to Your Birthday 🎂</h2>
+ <div id="countdown"></div>
 
-    <button onclick="openSurprise()">Open Today's Surprise 💌</button>
+ <button onclick="openSurprise()">Open Today's Surprise 💌</button>
 
-    <h2 id="quote"></h2>
+ <h2 id="quote"></h2>
 
-    <div class="photos">
-        <img id="photo1">
-        <img id="photo2">
-    </div>
+ <div id="photoBox" class="photoBox">
+   <img id="photo1">
+   <img id="photo2">
+ </div>
 
-    <video id="bdayVideo" controls>
-        <source src="birthday.mp4" type="video/mp4">
-    </video>
+ <video id="bdayVideo" controls>
+   <source src="birthday.mp4" type="video/mp4">
+ </video>
 
-    <div class="musicBadge" id="musicText"></div>
+ <div class="musicBadge" id="musicText"></div>
 </div>
 
 <audio id="music" loop></audio>
@@ -161,14 +143,14 @@ setInterval(()=>{
  countdown.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
-// surprises data
+// surprises with layouts
 const surprises={
-15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
-16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3"},
-17:{quote:"You are my today and all of my tomorrows 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3"},
-18:{quote:"I fall in love with you again every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3"},
-19:{quote:"One more sleep until your birthday 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3"},
-20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true}
+15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3",layout:"hero"},
+16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3",layout:"side"},
+17:{quote:"You are my today and all of my tomorrows 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3",layout:"stack"},
+18:{quote:"I fall in love with you again every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3",layout:"polaroid"},
+19:{quote:"One more sleep until your birthday 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3",layout:"side"},
+20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true,layout:"hero"}
 };
 
 function openSurprise(){
@@ -179,6 +161,8 @@ function openSurprise(){
  quote.innerHTML=data.quote;
  photo1.src=data.img1;
  photo2.src=data.img2;
+
+ document.getElementById("photoBox").className="photoBox "+data.layout;
 
  const music=document.getElementById("music");
  music.src=data.song;
