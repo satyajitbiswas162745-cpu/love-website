@@ -80,46 +80,74 @@ button{
     </div>
 
     <video id="bdayVideo" controls>
-        <source src="videos/birthday.mp4" type="video/mp4">
+        <source src="birthday.mp4" type="video/mp4">
     </video>
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
-// 🎂 Countdown
+// 🎂 Birthday countdown
 const birthday = new Date("Feb 20, 2026 00:00:00").getTime();
+
 setInterval(()=>{
     const now = new Date().getTime();
     const gap = birthday - now;
+
     const d = Math.floor(gap/(1000*60*60*24));
     const h = Math.floor((gap%(1000*60*60*24))/(1000*60*60));
     const m = Math.floor((gap%(1000*60*60))/(1000*60));
     const s = Math.floor((gap%(1000*60))/1000);
+
     countdown.innerHTML = d+"d "+h+"h "+m+"m "+s+"s";
 },1000);
 
-// 💌 Daily data
+
+// 💌 DAILY SURPRISE DATA (FILES IN ROOT)
 const surprises = {
 
-15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",
-img1:"photos/day15-1.jpg", img2:"photos/day15-2.jpg", song:"songs/day15.mp3"},
+15:{
+quote:"Every love story is beautiful, but ours is my favorite ❤️",
+img1:"day15-1.jpg",
+img2:"day15-2.jpg",
+song:"day15.mp3"
+},
 
-16:{quote:"With you, every moment becomes a memory 💖",
-img1:"photos/day16-1.jpg", img2:"photos/day16-2.jpg", song:"songs/day16.mp3"},
+16:{
+quote:"With you, every moment becomes a memory 💖",
+img1:"day16-1.jpg",
+img2:"day16-2.jpg",
+song:"day16.mp3"
+},
 
-17:{quote:"You are my today and all of my tomorrows 🌸",
-img1:"photos/day17-1.jpg", img2:"photos/day17-2.jpg", song:"songs/day17.mp3"},
+17:{
+quote:"You are my today and all of my tomorrows 🌸",
+img1:"day17-1.jpg",
+img2:"day17-2.jpg",
+song:"day17.mp3"
+},
 
-18:{quote:"I fall in love with you again every day 💕",
-img1:"photos/day18-1.jpg", img2:"photos/day18-2.jpg", song:"songs/day18.mp3"},
+18:{
+quote:"I fall in love with you again every day 💕",
+img1:"day18-1.jpg",
+img2:"day18-2.jpg",
+song:"day18.mp3"
+},
 
-19:{quote:"One more sleep until your birthday 🎉",
-img1:"photos/day19-1.jpg", img2:"photos/day19-2.jpg", song:"songs/day19.mp3"},
+19:{
+quote:"One more sleep until your birthday 🎉",
+img1:"day19-1.jpg",
+img2:"day19-2.jpg",
+song:"day19.mp3"
+},
 
-20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",
-img1:"photos/day20-1.jpg", img2:"photos/day20-2.jpg",
-song:"songs/birthday.mp3", video:true}
+20:{
+quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",
+img1:"day20-1.jpg",
+img2:"day20-2.jpg",
+song:"birthday.mp3",
+video:true
+}
 
 };
 
@@ -132,15 +160,18 @@ function openSurprise(){
         return;
     }
 
+    // show quote + photos
     quote.innerHTML = data.quote;
     photo1.src = data.img1;
     photo2.src = data.img2;
 
+    // play music (browser safe)
     const music = document.getElementById("music");
     music.src = data.song;
-    music.play();
+    music.load();
+    music.play().catch(()=>{});
 
-    // 🎥 show video only on birthday
+    // show birthday video on 20 Feb
     if(data.video){
         document.getElementById("bdayVideo").style.display="block";
     }
