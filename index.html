@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box}
 body{
  margin:0;
  font-family:Poppins;
@@ -17,50 +18,62 @@ body{
  color:white;
  overflow:hidden;
 }
+
+/* main card */
 .container{
  background:rgba(255,255,255,0.15);
  backdrop-filter:blur(18px);
  padding:25px;border-radius:30px;
  width:95%;max-width:650px;text-align:center;
+ box-shadow:0 0 40px rgba(0,0,0,.2);
 }
+
 h1{font-family:'Great Vibes';font-size:42px;margin:0}
-#countdown{font-size:32px;font-weight:700;margin:10px}
+
+#countdown{
+ font-size:34px;
+ font-weight:700;
+ margin:12px 0;
+ background:linear-gradient(90deg,#fff,#ffe3ec);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
 
 button{
  padding:14px 32px;border:none;border-radius:50px;
- font-weight:700;background:linear-gradient(90deg,#ff4f81,#ff7eb3);
+ font-weight:700;
+ background:linear-gradient(90deg,#ff4f81,#ff7eb3);
  color:white;cursor:pointer;
+ box-shadow:0 0 15px rgba(255,0,102,.6);
 }
 
-/* PHOTO VIEWER */
-.viewer{display:none;margin-top:15px}
+/* preview dropdown */
+.previewPanel{display:none;margin-bottom:10px}
+select{padding:6px;border-radius:10px;border:none}
 
+/* viewer hidden initially */
+.viewer{display:none}
+
+/* 💖 PERFECT PHOTO FRAME */
 .photoFrame{
- width:330px;height:380px;
- margin:auto;
- background:#0002;
- border-radius:20px;
+ width:340px;height:420px;
+ margin:20px auto;
+ border-radius:25px;
+ background:rgba(255,255,255,0.18);
+ backdrop-filter:blur(10px);
+ box-shadow:0 15px 35px rgba(0,0,0,.25);
  display:flex;
  justify-content:center;
  align-items:center;
- position:relative;
  overflow:hidden;
 }
 
 .photoFrame img{
- max-width:100%;
- max-height:100%;
- object-fit:contain;   /* ⭐ KEY FIX */
+ max-width:90%;
+ max-height:90%;
+ object-fit:contain;
  border-radius:18px;
-}
-
-.caption{
- position:absolute;
- bottom:8px;
- left:10px;
- font-size:14px;
- opacity:.9;
- display:none;
+ box-shadow:0 10px 25px rgba(0,0,0,.35);
 }
 
 .toggleBtn{
@@ -75,6 +88,19 @@ button{
 
 <div class="container">
 <h1>For My Love ❤️</h1>
+
+<div class="previewPanel" id="previewPanel">
+Preview Day:
+<select onchange="previewDay(this.value)">
+<option value="15">15 Feb</option>
+<option value="16">16 Feb</option>
+<option value="17">17 Feb</option>
+<option value="18">18 Feb</option>
+<option value="19">19 Feb</option>
+<option value="20">20 Feb</option>
+</select>
+</div>
+
 <div id="countdown"></div>
 <button onclick="openSurprise()">✨ OPEN TODAY'S SURPRISE 💌 ✨</button>
 
@@ -83,15 +109,23 @@ button{
 <div class="viewer" id="viewer">
   <div class="photoFrame">
      <img id="photo">
-     <div class="caption" id="caption">This song reminds me about you always 💖</div>
   </div>
   <div class="toggleBtn" id="toggleBtn" onclick="nextPhoto()">Next Photo ➜</div>
 </div>
+
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
+// preview mode detection
+const urlParams=new URLSearchParams(window.location.search);
+let forcedDay=null;
+if(urlParams.get("preview")==="true"){
+ document.getElementById("previewPanel").style.display="block";
+}
+function previewDay(day){forcedDay=day;}
+
 // countdown
 const birthday=new Date("Feb 20, 2026 00:00:00").getTime();
 setInterval(()=>{
@@ -103,26 +137,26 @@ setInterval(()=>{
  countdown.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
+// data
 const surprises={
 15:{quote:"Every love story is beautiful ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
 16:{quote:"With you every moment becomes memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3"},
 17:{quote:"You are my today and tomorrow 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3"},
 18:{quote:"I fall in love with you everyday 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3"},
 19:{quote:"One more sleep 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3"},
-20:{quote:"🎂 HAPPY BIRTHDAY ❤️",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3"}
+20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3"}
 };
 
 let stage=0,current;
 
 function openSurprise(){
- const today=new Date().getDate();
+ const today=forcedDay || new Date().getDate();
  const data=surprises[today];
  if(!data){quote.innerHTML="Starts 15 Feb 💌";return;}
 
  current=data;
  viewer.style.display="block";
  quote.innerHTML=data.quote;
-
  photo.src=data.img1;
  toggleBtn.style.display="inline-block";
 
@@ -134,12 +168,10 @@ function nextPhoto(){
  if(stage===0){
    photo.src=current.img2;
    toggleBtn.innerHTML="⬅ Previous Photo";
-   caption.style.display="block";   // show romantic line 💖
    stage=1;
  }else{
    photo.src=current.img1;
    toggleBtn.innerHTML="Next Photo ➜";
-   caption.style.display="none";
    stage=0;
  }
 }
