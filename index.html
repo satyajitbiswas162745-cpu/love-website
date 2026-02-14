@@ -18,131 +18,45 @@ body{
  color:white;
  overflow:hidden;
 }
-
-/* floating hearts */
-.heart{
- position:absolute;
- bottom:-40px;
- font-size:18px;
- animation:float 6s linear infinite;
- opacity:.6;
-}
-@keyframes float{
- from{transform:translateY(0)}
- to{transform:translateY(-110vh);opacity:0}
-}
-
-/* main card */
 .container{
  background:rgba(255,255,255,0.15);
  backdrop-filter:blur(18px);
- padding:28px;
- border-radius:30px;
- width:95%;
- max-width:650px;
- text-align:center;
- box-shadow:0 0 40px rgba(0,0,0,.2);
+ padding:28px;border-radius:30px;
+ width:95%;max-width:650px;text-align:center;
 }
-
 h1{font-family:'Great Vibes';font-size:42px;margin:0}
-
-.subtitle{
- font-weight:600;
- letter-spacing:.5px;
- font-size:18px;
-}
-
-/* SEXY COUNTDOWN */
-#countdown{
- font-size:34px;
- font-weight:700;
- margin:12px 0;
- letter-spacing:1px;
- background:linear-gradient(90deg,#fff,#ffe3ec);
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
- text-shadow:0 0 12px rgba(255,255,255,.6);
-}
-
-/* SEXY BUTTON */
-button{
- padding:14px 32px;
- border:none;
- border-radius:50px;
- font-size:16px;
- font-weight:700;
- letter-spacing:.5px;
- color:white;
- cursor:pointer;
- margin-top:15px;
- background:linear-gradient(90deg,#ff4f81,#ff7eb3);
- box-shadow:0 0 15px rgba(255,0,102,.6);
- transition:.35s;
-}
-button:hover{
- transform:translateY(-2px) scale(1.05);
- box-shadow:0 0 25px rgba(255,0,102,.9);
-}
-
-/* PHOTO VIEWER */
+.subtitle{font-weight:600;font-size:18px}
+#countdown{font-size:34px;font-weight:700;margin:12px}
+button{padding:14px 32px;border:none;border-radius:50px;font-weight:700;
+ background:linear-gradient(90deg,#ff4f81,#ff7eb3);color:white;cursor:pointer}
 .viewer{display:none;margin-top:15px}
-.photoFrame{
- width:320px;height:380px;margin:auto;
- overflow:hidden;border-radius:22px;
- box-shadow:0 15px 35px rgba(0,0,0,.3);
- position:relative;
-}
+.photoFrame{width:320px;height:380px;margin:auto;overflow:hidden;border-radius:22px}
 .slider{display:flex;transition:.6s}
 .slider img{width:320px;height:380px;object-fit:cover}
-
-.toggleBtn{
- margin-top:12px;background:white;color:#ff4f81;
- padding:10px 22px;border-radius:25px;
- display:inline-block;cursor:pointer;font-weight:600;
-}
-
-/* popup celebration */
-.popup{
- position:absolute;bottom:-120px;left:50%;
- transform:translateX(-50%);font-size:26px;opacity:0;
-}
-.showPopup{animation:pop 1.2s ease}
-@keyframes pop{
- 0%{bottom:-120px;opacity:0}
- 50%{bottom:40px;opacity:1}
- 100%{bottom:-120px;opacity:0}
-}
-
-video{width:100%;margin-top:12px;border-radius:18px;display:none}
-
-@media(max-width:500px){
- .photoFrame{width:280px;height:340px}
- .slider img{width:280px;height:340px}
-}
+.toggleBtn{margin-top:12px;background:white;color:#ff4f81;padding:10px 22px;border-radius:25px;cursor:pointer}
+.previewPanel{display:none;margin-bottom:10px}
+select{padding:6px;border-radius:8px;border:none}
 </style>
 </head>
 
 <body>
-
-<script>
-let heartCount=0;
-setInterval(()=>{
- if(heartCount>25) return;
- const h=document.createElement("div");
- h.className="heart";
- h.innerHTML="❤";
- h.style.left=Math.random()*100+"vw";
- document.body.appendChild(h);
- heartCount++;
- setTimeout(()=>{h.remove();heartCount--;},6000);
-},600);
-</script>
-
 <div class="container">
 <h1>For My Love ❤️</h1>
+
+<div class="previewPanel" id="previewPanel">
+Preview Mode Day:
+<select onchange="previewDay(this.value)">
+<option value="15">15 Feb</option>
+<option value="16">16 Feb</option>
+<option value="17">17 Feb</option>
+<option value="18">18 Feb</option>
+<option value="19">19 Feb</option>
+<option value="20">20 Feb</option>
+</select>
+</div>
+
 <h3 class="subtitle">Countdown to Your Birthday 🎂</h3>
 <div id="countdown"></div>
-
 <button onclick="openSurprise()">✨ OPEN TODAY'S SURPRISE 💌 ✨</button>
 <h3 id="quote"></h3>
 
@@ -151,19 +65,28 @@ setInterval(()=>{
     <div class="slider" id="slider">
       <img id="img1"><img id="img2">
     </div>
-    <div class="popup" id="popup">🎉💖✨</div>
   </div>
   <div class="toggleBtn" id="toggleBtn" onclick="togglePhoto()">Next Photo ➜</div>
 </div>
-
-<video id="bdayVideo" controls>
- <source src="birthday.mp4" type="video/mp4">
-</video>
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
+// detect preview mode
+const urlParams=new URLSearchParams(window.location.search);
+const previewMode=urlParams.get("preview");
+let forcedDay=null;
+
+if(previewMode==="true"){
+ document.getElementById("previewPanel").style.display="block";
+}
+
+function previewDay(day){
+ forcedDay=day;
+ openSurprise();
+}
+
 // countdown
 const birthday=new Date("Feb 20, 2026 00:00:00").getTime();
 setInterval(()=>{
@@ -176,47 +99,33 @@ setInterval(()=>{
  countdown.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
-// data
 const surprises={
-15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
+15:{quote:"Every love story is beautiful ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
 16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3"},
-17:{quote:"You are my today and all of my tomorrows 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3"},
-18:{quote:"I fall in love with you again every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3"},
-19:{quote:"One more sleep until your birthday 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3"},
-20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true}
+17:{quote:"You are my today and tomorrow 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3"},
+18:{quote:"I fall in love with you every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3"},
+19:{quote:"One more sleep 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3"},
+20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3"}
 };
 
 let slide=0;
 
 function openSurprise(){
- const today=new Date().getDate();
+ const today=forcedDay || new Date().getDate();
  const data=surprises[today];
- if(!data){quote.innerHTML="Your surprises start from 15 Feb 💌";return;}
+ if(!data){quote.innerHTML="Starts 15 Feb 💌";return;}
 
- document.getElementById("viewer").style.display="block";
+ viewer.style.display="block";
  quote.innerHTML=data.quote;
  img1.src=data.img1; img2.src=data.img2;
-
- const music=document.getElementById("music");
  music.src=data.song; music.play().catch(()=>{});
-
- if(data.video) document.getElementById("bdayVideo").style.display="block";
 }
 
 function togglePhoto(){
- const slider=document.getElementById("slider");
- const popup=document.getElementById("popup");
- slide = slide===0?1:0;
+ slide=slide===0?1:0;
  slider.style.transform=`translateX(-${slide*100}%)`;
-
- document.getElementById("toggleBtn").innerHTML=
-   slide===1?"⬅ Previous Photo":"Next Photo ➜";
-
- popup.classList.remove("showPopup");
- void popup.offsetWidth;
- popup.classList.add("showPopup");
+ toggleBtn.innerHTML=slide? "⬅ Previous Photo":"Next Photo ➜";
 }
 </script>
-
 </body>
 </html>
