@@ -79,14 +79,53 @@ button:hover{
  box-shadow:0 0 30px white;
 }
 
-/* PHOTO LAYOUTS */
-.photoBox{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:15px}
-img{border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:.4s}
-img:hover{transform:scale(1.05)}
-.side img{width:48%}
-.stack img{width:80%}
-.polaroid img{width:40%;background:white;padding:8px;box-shadow:0 10px 25px rgba(0,0,0,.3)}
-.hero img{width:90%}
+/* PHOTO LAYOUTS RESPONSIVE */
+.photoBox{
+  display:flex;
+  gap:18px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.photoBox img{
+  border-radius:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  transition:.4s;
+  max-width:100%;
+  height:auto;
+}
+
+.photoBox img:hover{transform:scale(1.04)}
+
+/* Desktop sizes */
+.side img{width:340px}
+.stack img{width:380px}
+.polaroid img{
+  width:260px;
+  background:white;
+  padding:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+.hero img{width:520px}
+
+/* Tablet */
+@media(max-width:900px){
+  .side img{width:300px}
+  .stack img{width:330px}
+  .hero img{width:420px}
+}
+
+/* Mobile */
+@media(max-width:600px){
+  .photoBox{gap:12px}
+  .side img,
+  .stack img,
+  .hero img,
+  .polaroid img{
+     width:90%;
+  }
+}
 
 video{width:100%;margin-top:15px;border-radius:20px;display:none}
 .musicBadge{margin-top:10px;font-size:14px;opacity:.8}
@@ -176,3 +215,4 @@ function openSurprise(){
 
 </body>
 </html>
+
