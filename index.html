@@ -3,94 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <title>For My Love ❤️</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
-
 body{
  margin:0;
  font-family:'Poppins',sans-serif;
  background:linear-gradient(135deg,#ff758c,#ff7eb3);
- height:100vh;
+ min-height:100vh;
  display:flex;
  justify-content:center;
  align-items:center;
  color:white;
- overflow:hidden;
+ overflow-x:hidden;
 }
 
 /* floating hearts */
 .heart{
- position:absolute;
- bottom:-50px;
- font-size:20px;
- animation:float 6s linear infinite;
- opacity:.6;
+ position:absolute; bottom:-50px; font-size:18px;
+ animation:float 6s linear infinite; opacity:.6;
 }
 @keyframes float{
  from{transform:translateY(0)}
  to{transform:translateY(-110vh);opacity:0}
 }
 
+/* card */
 .container{
  background:rgba(255,255,255,0.15);
  backdrop-filter:blur(18px);
- padding:35px;
+ padding:28px;
  border-radius:30px;
- width:90%;
- max-width:750px;
- box-shadow:0 0 40px rgba(0,0,0,.2);
+ width:95%;
+ max-width:650px;
  text-align:center;
+ box-shadow:0 0 40px rgba(0,0,0,.2);
 }
 
-/* photo viewer */
+h1{font-family:'Great Vibes';font-size:42px;margin:0}
+#countdown{font-size:26px;margin:10px}
+
+button{
+ padding:12px 26px;
+ border:none;
+ border-radius:30px;
+ background:white;
+ color:#ff4f81;
+ cursor:pointer;
+ margin-top:10px;
+}
+
+/* PHOTO VIEWER */
+.viewer{display:none;margin-top:15px}
+
 .photoFrame{
- width:420px;
- max-width:90%;
- margin:20px auto;
+ width:320px;
+ height:380px;
+ margin:auto;
  overflow:hidden;
- border-radius:25px;
+ border-radius:22px;
  box-shadow:0 15px 35px rgba(0,0,0,.3);
  position:relative;
 }
-
-.photoSlider{
- display:flex;
- transition:0.6s ease;
-}
-
-.photoSlider img{
- width:100%;
- height:480px;
+.slider{display:flex;transition:.6s}
+.slider img{
+ width:320px;height:380px;
  object-fit:cover;
 }
 
-/* toggle button */
+/* toggle */
 .toggleBtn{
- margin-top:10px;
+ margin-top:12px;
  background:white;
  color:#ff4f81;
- padding:10px 20px;
- border-radius:30px;
+ padding:10px 22px;
+ border-radius:25px;
+ display:inline-block;
  cursor:pointer;
- display:none;
 }
 
-button{
- padding:14px 30px;
- border:none;
- border-radius:40px;
- font-size:18px;
- background:white;
- color:#ff4f81;
- cursor:pointer;
- margin-top:15px;
+/* celebration popup */
+.popup{
+ position:absolute;
+ bottom:-120px;
+ left:50%;
+ transform:translateX(-50%);
+ font-size:26px;
+ opacity:0;
+}
+.showPopup{
+ animation:pop 1.2s ease;
+}
+@keyframes pop{
+ 0%{bottom:-120px;opacity:0}
+ 50%{bottom:40px;opacity:1}
+ 100%{bottom:-120px;opacity:0}
 }
 
-video{width:100%;margin-top:15px;border-radius:20px;display:none}
-#countdown{font-size:30px;margin:15px}
+video{width:100%;margin-top:12px;border-radius:18px;display:none}
+
+@media(max-width:500px){
+ .photoFrame{width:280px;height:340px}
+ .slider img{width:280px;height:340px}
+}
 </style>
 </head>
 
@@ -108,26 +124,28 @@ setInterval(()=>{
 </script>
 
 <div class="container">
- <h1 style="font-family:'Great Vibes';font-size:48px">For My Love ❤️</h1>
- <h2>Countdown to Your Birthday 🎂</h2>
- <div id="countdown"></div>
+<h1>For My Love ❤️</h1>
+<h3>Countdown to Your Birthday 🎂</h3>
+<div id="countdown"></div>
 
- <button onclick="openSurprise()">Open Today's Surprise 💌</button>
- <h2 id="quote"></h2>
+<button onclick="openSurprise()">Open Today's Surprise 💌</button>
+<h3 id="quote"></h3>
 
- <!-- PHOTO SLIDER -->
- <div class="photoFrame">
-   <div class="photoSlider" id="slider">
-     <img id="img1">
-     <img id="img2">
-   </div>
- </div>
+<!-- hidden viewer -->
+<div class="viewer" id="viewer">
+  <div class="photoFrame">
+    <div class="slider" id="slider">
+      <img id="img1"><img id="img2">
+    </div>
+    <div class="popup" id="popup">🎉💖✨</div>
+  </div>
 
- <div class="toggleBtn" id="toggleBtn" onclick="nextPhoto()">Next Photo ➜</div>
+  <div class="toggleBtn" id="toggleBtn" onclick="togglePhoto()">Next Photo ➜</div>
+</div>
 
- <video id="bdayVideo" controls>
-   <source src="birthday.mp4" type="video/mp4">
- </video>
+<video id="bdayVideo" controls>
+ <source src="birthday.mp4" type="video/mp4">
+</video>
 </div>
 
 <audio id="music" loop></audio>
@@ -145,7 +163,7 @@ setInterval(()=>{
  countdown.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
-// daily data
+// data
 const surprises={
 15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
 16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3"},
@@ -155,32 +173,37 @@ const surprises={
 20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true}
 };
 
-let currentSlide=0;
+let slide=0;
 
 function openSurprise(){
  const today=new Date().getDate();
  const data=surprises[today];
  if(!data){quote.innerHTML="Your surprises start from 15 Feb 💌";return;}
 
+ document.getElementById("viewer").style.display="block";
  quote.innerHTML=data.quote;
-
- img1.src=data.img1;
- img2.src=data.img2;
-
- document.getElementById("toggleBtn").style.display="inline-block";
+ img1.src=data.img1; img2.src=data.img2;
 
  const music=document.getElementById("music");
- music.src=data.song;
- music.load();
- music.play().catch(()=>{});
+ music.src=data.song; music.play().catch(()=>{});
 
  if(data.video) document.getElementById("bdayVideo").style.display="block";
 }
 
-function nextPhoto(){
+function togglePhoto(){
  const slider=document.getElementById("slider");
- currentSlide = currentSlide===0 ? 1 : 0;
- slider.style.transform=`translateX(-${currentSlide*100}%)`;
+ const popup=document.getElementById("popup");
+ slide = slide===0?1:0;
+ slider.style.transform=`translateX(-${slide*100}%)`;
+
+ // change button text
+ document.getElementById("toggleBtn").innerHTML=
+   slide===1?"⬅ Previous Photo":"Next Photo ➜";
+
+ // celebration popup
+ popup.classList.remove("showPopup");
+ void popup.offsetWidth;
+ popup.classList.add("showPopup");
 }
 </script>
 
