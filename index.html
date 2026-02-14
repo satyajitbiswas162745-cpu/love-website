@@ -4,39 +4,96 @@
 <meta charset="UTF-8">
 <title>For My Love ❤️</title>
 
+<!-- Romantic Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
 <style>
+*{box-sizing:border-box}
+
 body{
     margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     color:white;
-    text-align:center;
+    overflow:hidden;
+}
+
+/* floating hearts */
+.heart{
+    position:absolute;
+    bottom:-50px;
+    font-size:20px;
+    animation:float 6s linear infinite;
+    opacity:.6;
+}
+@keyframes float{
+    from{transform:translateY(0);opacity:1}
+    to{transform:translateY(-110vh);opacity:0}
 }
 
 .container{
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(12px);
-    padding:25px;
-    border-radius:25px;
+    animation:fadeIn 1.5s ease;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(18px);
+    padding:35px;
+    border-radius:30px;
     width:90%;
     max-width:750px;
+    box-shadow:0 0 40px rgba(0,0,0,.2);
 }
 
-img{
-    width:48%;
-    border-radius:20px;
-    margin-top:10px;
-    box-shadow:0 0 20px rgba(0,0,0,0.3);
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(40px)}
+    to{opacity:1}
+}
+
+h1{
+    font-family:'Great Vibes',cursive;
+    font-size:48px;
+    margin:0;
+}
+
+h2{margin:10px 0}
+
+#countdown{
+    font-size:32px;
+    font-weight:600;
+    margin:15px 0;
+}
+
+button{
+    padding:14px 30px;
+    border:none;
+    border-radius:40px;
+    font-size:18px;
+    background:white;
+    color:#ff4f81;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 0 20px rgba(255,255,255,.6);
+}
+button:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 30px white;
 }
 
 .photos{
     display:flex;
-    justify-content:space-between;
+    gap:10px;
+    margin-top:10px;
 }
+
+img{
+    width:50%;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,.3);
+    transition:.4s;
+}
+img:hover{transform:scale(1.05)}
 
 video{
     width:100%;
@@ -45,26 +102,28 @@ video{
     display:none;
 }
 
-button{
-    padding:12px 25px;
-    border:none;
-    border-radius:30px;
-    font-size:18px;
-    background:white;
-    color:#ff4f81;
-    cursor:pointer;
-    margin-top:15px;
-}
-
-#countdown{
-    font-size:28px;
-    font-weight:bold;
-    margin-bottom:10px;
+.musicBadge{
+    margin-top:10px;
+    font-size:14px;
+    opacity:.8;
 }
 </style>
 </head>
 
 <body>
+
+<!-- floating hearts -->
+<script>
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=Math.random()*20+10+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},400);
+</script>
 
 <div class="container">
     <h1>For My Love ❤️</h1>
@@ -74,6 +133,7 @@ button{
     <button onclick="openSurprise()">Open Today's Surprise 💌</button>
 
     <h2 id="quote"></h2>
+
     <div class="photos">
         <img id="photo1">
         <img id="photo2">
@@ -82,99 +142,51 @@ button{
     <video id="bdayVideo" controls>
         <source src="birthday.mp4" type="video/mp4">
     </video>
+
+    <div class="musicBadge" id="musicText"></div>
 </div>
 
 <audio id="music" loop></audio>
 
 <script>
-// 🎂 Birthday countdown
-const birthday = new Date("Feb 20, 2026 00:00:00").getTime();
-
+// countdown
+const birthday=new Date("Feb 20, 2026 00:00:00").getTime();
 setInterval(()=>{
-    const now = new Date().getTime();
-    const gap = birthday - now;
-
-    const d = Math.floor(gap/(1000*60*60*24));
-    const h = Math.floor((gap%(1000*60*60*24))/(1000*60*60));
-    const m = Math.floor((gap%(1000*60*60))/(1000*60));
-    const s = Math.floor((gap%(1000*60))/1000);
-
-    countdown.innerHTML = d+"d "+h+"h "+m+"m "+s+"s";
+ const now=new Date().getTime();
+ const gap=birthday-now;
+ const d=Math.floor(gap/(1000*60*60*24));
+ const h=Math.floor((gap%(1000*60*60*24))/(1000*60*60));
+ const m=Math.floor((gap%(1000*60*60))/(1000*60));
+ const s=Math.floor((gap%(1000*60))/1000);
+ countdown.innerHTML=`${d}d ${h}h ${m}m ${s}s`;
 },1000);
 
-
-// 💌 DAILY SURPRISE DATA (FILES IN ROOT)
-const surprises = {
-
-15:{
-quote:"Every love story is beautiful, but ours is my favorite ❤️",
-img1:"day15-1.jpg",
-img2:"day15-2.jpg",
-song:"day15.mp3"
-},
-
-16:{
-quote:"With you, every moment becomes a memory 💖",
-img1:"day16-1.jpg",
-img2:"day16-2.jpg",
-song:"day16.mp3"
-},
-
-17:{
-quote:"You are my today and all of my tomorrows 🌸",
-img1:"day17-1.jpg",
-img2:"day17-2.jpg",
-song:"day17.mp3"
-},
-
-18:{
-quote:"I fall in love with you again every day 💕",
-img1:"day18-1.jpg",
-img2:"day18-2.jpg",
-song:"day18.mp3"
-},
-
-19:{
-quote:"One more sleep until your birthday 🎉",
-img1:"day19-1.jpg",
-img2:"day19-2.jpg",
-song:"day19.mp3"
-},
-
-20:{
-quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",
-img1:"day20-1.jpg",
-img2:"day20-2.jpg",
-song:"birthday.mp3",
-video:true
-}
-
+// surprises data
+const surprises={
+15:{quote:"Every love story is beautiful, but ours is my favorite ❤️",img1:"day15-1.jpg",img2:"day15-2.jpg",song:"day15.mp3"},
+16:{quote:"With you, every moment becomes a memory 💖",img1:"day16-1.jpg",img2:"day16-2.jpg",song:"day16.mp3"},
+17:{quote:"You are my today and all of my tomorrows 🌸",img1:"day17-1.jpg",img2:"day17-2.jpg",song:"day17.mp3"},
+18:{quote:"I fall in love with you again every day 💕",img1:"day18-1.jpg",img2:"day18-2.jpg",song:"day18.mp3"},
+19:{quote:"One more sleep until your birthday 🎉",img1:"day19-1.jpg",img2:"day19-2.jpg",song:"day19.mp3"},
+20:{quote:"🎂 HAPPY BIRTHDAY MY LOVE 🎂",img1:"day20-1.jpg",img2:"day20-2.jpg",song:"birthday.mp3",video:true}
 };
 
 function openSurprise(){
-    const today = new Date().getDate();
-    const data = surprises[today];
+ const today=new Date().getDate();
+ const data=surprises[today];
+ if(!data){quote.innerHTML="Your surprises start from 15 Feb 💌";return;}
 
-    if(!data){
-        quote.innerHTML="Your surprises start from 15 Feb 💌";
-        return;
-    }
+ quote.innerHTML=data.quote;
+ photo1.src=data.img1;
+ photo2.src=data.img2;
 
-    // show quote + photos
-    quote.innerHTML = data.quote;
-    photo1.src = data.img1;
-    photo2.src = data.img2;
+ const music=document.getElementById("music");
+ music.src=data.song;
+ music.load();
+ music.play().catch(()=>{});
+ musicText.innerHTML="🎵 Playing your song...";
 
-    // play music (browser safe)
-    const music = document.getElementById("music");
-    music.src = data.song;
-    music.load();
-    music.play().catch(()=>{});
-
-    // show birthday video on 20 Feb
-    if(data.video){
-        document.getElementById("bdayVideo").style.display="block";
-    }
+ if(data.video) document.getElementById("bdayVideo").style.display="block";
 }
 </script>
 
